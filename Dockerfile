@@ -5,5 +5,5 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
  && dpkg-reconfigure -f noninteractive tzdata \
  && apt-get clean && rm -rf /var/lib/apt/lists/
 ADD squid3 /etc/init.d/squid3
-#RUN chmod 755 /etc/init.d/squid3 
+RUN chmod 755 /etc/init.d/squid3 
 ENTRYPOINT ["/etc/init.d/squid3","start"]
