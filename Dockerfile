@@ -7,3 +7,4 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
 ADD squid /etc/init.d/squid
 RUN chmod 755 /etc/init.d/squid
 ENTRYPOINT ["/etc/init.d/squid","start"]
+VOLUME /etc/squid3
