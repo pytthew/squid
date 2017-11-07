@@ -1,0 +1,19 @@
+version: "3.4"
+services:
+  tseu_squid:
+    image: itsh/squid
+    deploy:
+      replicas: 8
+      resources:
+        limits:
+            memory: 4G
+      restart_policy:
+        condition: any
+        delay: 5s
+        max_attempts: 3
+        window: 60s
+      update_config:
+        parallelism: 1
+        delay: 5s
+        failure_action: rollback
+        monitor: 10s
