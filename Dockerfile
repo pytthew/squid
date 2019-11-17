@@ -1,4 +1,4 @@
-FROM debian:stable-slim
+FROM debian:buster-slim
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
  && apt-get install -y squid squidclient net-tools tcpdump telnet htop \
  && ln -sf /usr/share/zoneinfo/Europe/Budapest /etc/localtime \
