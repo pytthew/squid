@@ -1,5 +1,5 @@
 FROM debian:jessie-slim
-RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
+RUN apt-get update && export DEBIAN_FRONTEND=noninteractive  \
  && apt-get install -y squid3
  && ln -sf /usr/share/zoneinfo/Europe/Budapest /etc/localtime \
  && dpkg-reconfigure -f noninteractive tzdata \
