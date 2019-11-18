@@ -1,6 +1,6 @@
 FROM debian:jessie-slim
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
- && apt-get install -y squid squidclient net-tools tcpdump telnet htop \
+ && apt-get install -y squid3
  && ln -sf /usr/share/zoneinfo/Europe/Budapest /etc/localtime \
  && dpkg-reconfigure -f noninteractive tzdata \
  && apt-get clean && rm -rf /var/lib/apt/lists/
