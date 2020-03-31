@@ -1,4 +1,4 @@
-FROM debian
+FROM debian:9-slim
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
  && apt-get install -y squid \
  && ln -sf /usr/share/zoneinfo/Europe/Budapest /etc/localtime \
