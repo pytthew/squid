@@ -1,6 +1,6 @@
-FROM ubuntu:20.04
-RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
- && apt-get install -y squid \
+FROM debian:9-slim
+RUN apt update -qq && export DEBIAN_FRONTEND=noninteractive \
+ && apt install -y squid \
  && ln -sf /usr/share/zoneinfo/Europe/Budapest /etc/localtime \
  && dpkg-reconfigure -f noninteractive tzdata \
  && apt-get clean && rm -rf /var/lib/apt/lists/
