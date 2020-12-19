@@ -1,19 +1,83 @@
-version: "3.4"
+networks:
+  itsh:
+    driver_opts:
+      com.docker.network.bridge.enable_ip_masquerade: "false"
+      com.docker.network.bridge.name: itsh
+    ipam:
+      config:
+      - subnet:  ${itshnw:?}
+        gateway: ${itshgw:?}
+  emea:
+    driver_opts:
+      com.docker.network.bridge.enable_ip_masquerade: "false"
+      com.docker.network.bridge.name: emea
+    ipam:
+      config:
+      - subnet:  ${emeanw:?}
+        gateway: ${emeagw:?}
 services:
-  tseu_squid:
-    image: itsh/squid
-    deploy:
-      replicas: 8
-      resources:
-        limits:
-            memory: 4G
-      restart_policy:
-        condition: any
-        delay: 5s
-        max_attempts: 3
-        window: 60s
-      update_config:
-        parallelism: 1
-        delay: 5s
-        failure_action: rollback
-        monitor: 10s
+  itsh_squid:
+    extends:
+      file: docker-compose.services
+      service: squid
+    scale: ${itsh:-4}
+    networks:
+    - itsh
+    volumes:
+    - /root/itsh/krb5.keytab:/etc/krb5.keytab:ro
+    - /root/itsh/krb5:/etc/squid/krb5:ro
+  itsh_squid2:
+    container_name: ytb_itsh_squid_0
+    extends:
+      file: docker-compose.services
+      service: squid
+    scale: 1
+    networks:
+      itsh:
+        ipv4_address: ${itshyt}
+    volumes:
+    - /root/itsh/krb5.keytab:/etc/krb5.keytab:ro
+    - /root/itsh/krb5youtube:/etc/squid/krb5:ro
+  emea_squid:
+    extends:
+      file: docker-compose.services
+      service: squid
+    scale: ${emea:-4}
+    networks:
+    - emea
+    volumes:
+    - /root/emea/krb5.keytab:/etc/krb5.keytab:ro
+    - /root/emea/krb5:/etc/squid/krb5:ro
+  emea_squid2:
+    container_name: ytb_emea_squid_0
+    extends:
+      file: docker-compose.services
+      service: squid
+    scale: 1
+    networks:
+      emea:
+        ipv4_address: ${emeayt}
+    volumes:
+    - /root/emea/krb5.keytab:/etc/krb5.keytab:ro
+    - /root/emea/krb5youtube:/etc/squid/krb5:ro
+  squid:
+    container_name: squid
+    extends:
+      file: docker-compose.services
+      service: squid
+    scale: 1
+    sysctls:
+    - net.ipv6.conf.all.disable_ipv6=0
+    volumes:
+    - /root/itsh/krb5.keytab:/etc/krb5.keytab:ro
+    - /root/itsh/krb5:/etc/squid/krb5:ro
+  squidconf:
+    extends:
+      file: docker-compose.services
+      service: squidconf
+  syslog:
+    extends:
+      file: docker-compose.services
+      service: syslog
+version: '2.2'
+volumes: {}
