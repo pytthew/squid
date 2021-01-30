@@ -1,4 +1,4 @@
-FROM debian:buster-slim
+FROM debian:stretch-slim
 RUN apt update -qq && export DEBIAN_FRONTEND=noninteractive \
  && apt install -y squid \
  && ln -sf /usr/share/zoneinfo/Europe/Budapest /etc/localtime \
